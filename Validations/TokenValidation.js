@@ -13,6 +13,6 @@ module.exports = async (req, res, next) => {
     if (errorMessage === 'jwt malformed') {
         errorMessage = 'Expired or invalid token';
     } 
-    return res.status(401).json({ errorMessage });
+    return res.status(401).json({ message: errorMessage });
   }
 };
