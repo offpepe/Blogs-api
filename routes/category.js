@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { createCategory } = require('../controllers/category');
-const { tokenValidation } = require('../Validations');
+const { tokenValidation, CreateCategoryValidation } = require('../Validations');
 
-router.post('/', tokenValidation, createCategory);
+router.post('/', tokenValidation, CreateCategoryValidation, createCategory);
 
 module.exports = router;
