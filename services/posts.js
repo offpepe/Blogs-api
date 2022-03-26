@@ -44,8 +44,26 @@ const getAllPosts = async () => {
     return post;
   };
 
+  const updatePost = async (title, content, id) => {
+      await Post.update(
+        { title, content },
+        { where: { id } },
+        );
+      const updated = await Post.findOne({ 
+        where: { id },
+        include:
+            [
+              { model: Category, as: 'categories' },
+            ],
+        attributes: { exclude: ['published', 'updated'] },
+     });
+      if (updated == null) throw new Error('Post does not exist');
+      return updated;
+  };
+
 module.exports = {
     createPost,
     getAllPosts,
     getPostById,
+    updatePost,
 };
