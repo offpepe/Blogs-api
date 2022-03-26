@@ -15,7 +15,15 @@ const login = async (email, password) => {
     return JwtGenerator(userCreated.displayName, userCreated.email);
 };
 
+const getUsers = async () => {
+    const users = await User.findAll({
+        attributes: { exclude: ['password'] },
+    });
+    return users;
+};
+
 module.exports = {
     register,
     login,
+    getUsers,
 };
