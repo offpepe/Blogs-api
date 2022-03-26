@@ -5,5 +5,5 @@ const tokenValidation = require('./TokenValidation');
 module.exports = {
     createUserValidation,
     loginValidation,
-    tokenValidation
+    tokenValidation,
 };
