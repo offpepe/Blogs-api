@@ -61,9 +61,16 @@ const getAllPosts = async () => {
       return updated;
   };
 
+  const deletePost = async (id) => {
+    await getPostById(id);
+    await PostCategory.destroy({ where: { postId: id } });
+    await Post.destroy({ where: { id } });
+  };
+
 module.exports = {
     createPost,
     getAllPosts,
     getPostById,
     updatePost,
+    deletePost,
 };
