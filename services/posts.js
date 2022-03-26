@@ -12,7 +12,12 @@ const createPost = async (title, content, categoriesId, userEmail) => {
     const formattedCategories = categoriesId
     .map(((id) => ({ categoryId: id, postId: created.id })));
     await Promise.all(formattedCategories.map((postCat) => PostCategory.create(postCat)));
-    return created;
+    return { 
+        id: created.id,
+        title: created.title,
+        content: created.content,
+        userId: created.userId,
+     };
 };
 
 module.exports = {
