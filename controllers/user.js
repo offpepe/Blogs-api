@@ -35,9 +35,20 @@ const getUserById = async (req, res) => {
     }
 };
 
+const deleteUserByEmail = async (req, res) => {
+    try {
+        const email = req.tokenData;
+        await service.deleteUserByEmail(email);
+        res.status(204).end();
+    } catch (error) {
+        return res.status(500).json({ message: 'Erro interno' });
+    }
+};
+
 module.exports = {
     register,
     login,
     getUsers,
     getUserById,
+    deleteUserByEmail,
 };
