@@ -6,7 +6,9 @@ module.exports = async (req, res, next) => {
   try {
     const token = req.headers.authorization;
     if (!token) throw new Error('Token not found');
-    jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
+    console.log(decoded);
+    req.tokenData = decoded.email;
     next();
   } catch (error) {
     let errorMessage = error.message;
