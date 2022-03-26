@@ -9,6 +9,13 @@ const register = async (displayName, email, password, image) => {
     return JwtGenerator(userCreated.displayName, userCreated.email);
 };
 
+const login = async (email, password) => {
+    const userCreated = await User.findOne({ where: { email, password } });
+    if (!userCreated) throw new Error('Invalid fields');
+    return JwtGenerator(userCreated.displayName, userCreated.email);
+};
+
 module.exports = {
     register,
+    login,
 };
