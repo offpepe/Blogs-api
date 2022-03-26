@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { getAllCategories } = require('./categories');
-const { User, Post, PostCategory } = require('../models');
+const { User, Post, PostCategory, Category } = require('../models');
 
 const createPost = async (title, content, categoriesId, userEmail) => {
     const user = await User.findOne({ where: { email: userEmail } });
@@ -20,6 +20,32 @@ const createPost = async (title, content, categoriesId, userEmail) => {
      };
 };
 
+const getAllPosts = async () => {
+    const posts = await Post.findAll({ include:
+      [
+        { model: User, as: 'user', attributes: { exclude: ['password'] } },
+        { model: Category, as: 'categories' },
+      ],
+     });
+  
+    return posts;
+  };
+
+  const getPostById = async (id) => {
+    const post = await Post.findOne({ 
+        where: { id },
+        include:
+            [
+              { model: User, as: 'user', attributes: { exclude: ['password'] } },
+              { model: Category, as: 'categories' },
+            ],
+     });
+    if (!post) throw new Error('Post does not exist');
+    return post;
+  };
+
 module.exports = {
     createPost,
+    getAllPosts,
+    getPostById,
 };
