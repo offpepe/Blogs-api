@@ -30,9 +30,11 @@ const updatePost = async (req, res) => {
     try {
         const { id } = req.params;
         const { title, content } = req.body;
-        const updated = await service.updatePost(title, content, id);
+        const email = req.tokenData;
+        const updated = await service.updatePost(title, content, id, email);
         return res.status(200).json(updated);
     } catch (error) {
+        if (error.message === '401') return res.status(401).json({ message: 'Unauthorized user' });
         return res.status(404).json({ message: error.message });
     }
 };
@@ -40,9 +42,11 @@ const updatePost = async (req, res) => {
 const deletePost = async (req, res) => {
     try {
         const { id } = req.params;
-        await service.deletePost(id);
+        const email = req.tokenData;
+        await service.deletePost(id, email);
         return res.status(204).end();
     } catch (e) {
+        if (e.message === '401') return res.status(401).json({ message: 'Unauthorized user' });
         return res.status(404).json({ message: e.message });
     }
 };

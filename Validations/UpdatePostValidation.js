@@ -7,7 +7,8 @@ const schema = Joi.object({
 
 module.exports = (req, res, next) => {
     try {
-        const { title, content } = req.body;
+        const { title, content, categoryIds } = req.body;
+        if (categoryIds) throw new Error('Categories cannot be edited');
         const { error } = schema.validate({ title, content });
         if (error) throw new Error(error.message);
         next();

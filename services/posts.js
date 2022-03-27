@@ -13,7 +13,7 @@ const createPost = async (title, content, categoriesId, userEmail) => {
     const formattedCategories = categoriesId
     .map(((id) => ({ categoryId: id, postId: created.id })));
     await Promise.all(formattedCategories.map((postCat) => PostCategory.create(postCat)));
-    return { 
+    return {
         id: created.id,
         title: created.title,
         content: created.content,
@@ -28,12 +28,12 @@ const getAllPosts = async () => {
         { model: Category, as: 'categories' },
       ],
      });
-  
+
     return posts;
   };
 
   const getPostById = async (id) => {
-    const post = await Post.findOne({ 
+    const post = await Post.findOne({
         where: { id },
         include:
             [
@@ -45,12 +45,19 @@ const getAllPosts = async () => {
     return post;
   };
 
-  const updatePost = async (title, content, id) => {
+const validateUser = async (userEmail, postId) => {
+    const user = await User.findOne({ where: { email: userEmail } });
+    const post = await Post.findOne({ where: { id: postId, userId: user.id } });
+    if (!post) throw new Error('401');
+};
+
+  const updatePost = async (title, content, id, email) => {
+      await validateUser(email, id);
       await Post.update(
         { title, content },
         { where: { id } },
         );
-      const updated = await Post.findOne({ 
+      const updated = await Post.findOne({
         where: { id },
         include:
             [
@@ -62,8 +69,9 @@ const getAllPosts = async () => {
       return updated;
   };
 
-  const deletePost = async (id) => {
+  const deletePost = async (id, email) => {
     await getPostById(id);
+    await validateUser(email, id);
     await PostCategory.destroy({ where: { postId: id } });
     await Post.destroy({ where: { id } });
   };
