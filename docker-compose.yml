@@ -1,0 +1,16 @@
+version: '3.3'
+services:
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'blogs_api'
+      MYSQL_USER: 'offpepe'
+      MYSQL_PASSWORD: 'eab78b3d9f1899a137a308a20287eae8'
+      MYSQL_ROOT_PASSWORD: 'eab78b3d9f1899a137a308a20287eae8'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+volumes:
+  my-db:
